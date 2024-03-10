@@ -4,10 +4,10 @@ const quizContainer = document.getElementById('quiz-container');
 const resultContainer = document.getElementById('result-container');
 const timerElement = document.getElementById('timer');
 let timer;
-let timeRemaining = 60; // Set the initial time in seconds
+let timeRemaining = 60; // 60 sec timer
 let currentQuestionIndex = 0;
 let score = 0;
-
+//questions
 const questions = [
     {
         question: 'What does HTML stand for?',
@@ -52,6 +52,8 @@ const questions = [
 ];
 
 function startQuiz() {
+    timeRemaining = 60; // Reset the timer
+    score = 0; // Reset the score
     startTimer();
     displayNextQuestion();
     document.getElementById('start-btn').style.display = 'none';
@@ -102,5 +104,21 @@ function endQuiz() {
     timerElement.textContent = 'Time: 0s';
     quizContainer.innerHTML = `<h2>Quiz Over!</h2><p>Your final score is ${score}.</p>`;
 
-    // You can add code here to store the score or perform any other end-of-quiz actions
+    // Save the score
+    const savedScore = { score, timestamp: new Date().toLocaleString() };
+    
+    console.log('Saved Score:', savedScore);
+
+    //restart button
+    const restartButton = document.createElement('button');
+    restartButton.textContent = 'Restart Quiz';
+    restartButton.addEventListener('click', restartQuiz);
+    resultContainer.appendChild(restartButton);
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    resultContainer.innerHTML = ''; // Clear the result container
+    document.getElementById('start-btn').style.display = 'inline'; //start button again
+    startQuiz(); // restart quiz
 }
